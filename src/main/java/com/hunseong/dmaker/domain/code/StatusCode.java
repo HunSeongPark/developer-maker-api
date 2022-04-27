@@ -1,4 +1,4 @@
-package com.hunseong.dmaker.domain.type;
+package com.hunseong.dmaker.domain.code;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +8,10 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum SkillLevel {
-
-    NEW("신입"),
-    JUNIOR("주니어"),
-    JUNGNIOR("중니어"),
-    SENIOR("시니어");
+public enum StatusCode {
+    EMPLOYED("고용"),
+    LEAVE("휴직"),
+    RETIRED("퇴직");
 
     private final String description;
 }

@@ -1,5 +1,6 @@
 package com.hunseong.dmaker.domain.entity;
 
+import com.hunseong.dmaker.domain.code.StatusCode;
 import com.hunseong.dmaker.domain.type.SkillLevel;
 import com.hunseong.dmaker.domain.type.SkillType;
 import lombok.*;
@@ -29,4 +30,7 @@ public class Developer extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private SkillLevel skillLevel;
+
+    @Enumerated(EnumType.STRING)
+    private StatusCode status;
 }
