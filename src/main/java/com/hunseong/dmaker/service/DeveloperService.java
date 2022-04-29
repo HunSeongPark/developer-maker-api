@@ -1,7 +1,8 @@
 package com.hunseong.dmaker.service;
 
-import com.hunseong.dmaker.domain.dto.CreateMemberRequest;
-import com.hunseong.dmaker.domain.dto.CreateMemberResponse;
+import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
+import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
+import com.hunseong.dmaker.domain.dto.DeveloperDetailDto;
 import com.hunseong.dmaker.domain.entity.Developer;
 import com.hunseong.dmaker.domain.type.SkillLevel;
 import com.hunseong.dmaker.exception.DeveloperException;
@@ -10,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.hunseong.dmaker.exception.DeveloperErrorCode.DUPLICATED_NAME;
-import static com.hunseong.dmaker.exception.DeveloperErrorCode.LEVEL_EXPERIENCE_YEAR_NOT_MATCHED;
+import static com.hunseong.dmaker.exception.DeveloperErrorCode.*;
 
 /**
  * Created by Hunseong on 2022/04/29
@@ -24,7 +24,7 @@ public class DeveloperService {
     private final DeveloperRepository developerRepository;
 
     @Transactional
-    public CreateMemberResponse createDeveloper(CreateMemberRequest request) {
+    public CreateDeveloperResponse createDeveloper(CreateDeveloperRequest request) {
         validateDeveloperRequest(request);
 
         Developer developer = Developer.builder()
@@ -36,10 +36,10 @@ public class DeveloperService {
                 .build();
 
         Developer savedDeveloper = developerRepository.save(developer);
-        return new CreateMemberResponse(savedDeveloper.getId(), savedDeveloper.getName());
+        return new CreateDeveloperResponse(savedDeveloper.getId(), savedDeveloper.getName());
     }
 
-    private void validateDeveloperRequest(CreateMemberRequest request) {
+    private void validateDeveloperRequest(CreateDeveloperRequest request) {
         validateDeveloperLevel(request.getSkillLevel(), request.getWorkYear());
 
         developerRepository.findByName(request.getName())
@@ -61,5 +61,11 @@ public class DeveloperService {
         if (skillLevel == SkillLevel.NEW && workYear > 0) {
             throw new DeveloperException(LEVEL_EXPERIENCE_YEAR_NOT_MATCHED);
         }
+    }
+
+    public DeveloperDetailDto findDeveloperDetail(Long id) {
+        return developerRepository.findById(id)
+                .map(DeveloperDetailDto::new)
+                .orElseThrow(() -> new DeveloperException(NO_DEVELOPER));
     }
 }

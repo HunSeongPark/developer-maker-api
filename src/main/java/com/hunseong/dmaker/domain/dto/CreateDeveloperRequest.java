@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateMemberRequest {
+public class CreateDeveloperRequest {
 
     @NotNull
     @Size(min = 3, max = 50, message = "이름은 3 ~ 50자까지 가능합니다.")

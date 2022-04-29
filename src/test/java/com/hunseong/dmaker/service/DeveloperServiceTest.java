@@ -1,11 +1,10 @@
 package com.hunseong.dmaker.service;
 
-import com.hunseong.dmaker.domain.dto.CreateMemberRequest;
-import com.hunseong.dmaker.domain.dto.CreateMemberResponse;
+import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
+import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
 import com.hunseong.dmaker.domain.type.SkillLevel;
 import com.hunseong.dmaker.domain.type.SkillType;
 import com.hunseong.dmaker.exception.DeveloperException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,11 +27,11 @@ class DeveloperServiceTest {
     void create_developer_success() {
 
         // given
-        CreateMemberRequest request = new CreateMemberRequest(
+        CreateDeveloperRequest request = new CreateDeveloperRequest(
                 "name", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
 
         // when
-        CreateMemberResponse response = developerService.createDeveloper(request);
+        CreateDeveloperResponse response = developerService.createDeveloper(request);
 
         // then
         assertThat(response.getId()).isNotNull();
@@ -43,11 +42,11 @@ class DeveloperServiceTest {
     void create_developer_duplicate_name() {
 
         // given
-        CreateMemberRequest request = new CreateMemberRequest(
+        CreateDeveloperRequest request = new CreateDeveloperRequest(
                 "name", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
         developerService.createDeveloper(request);
 
-        CreateMemberRequest errorRequest = new CreateMemberRequest(
+        CreateDeveloperRequest errorRequest = new CreateDeveloperRequest(
                 "name", 30, 20, SkillType.BACK_END, SkillLevel.SENIOR);
 
         // when & then
@@ -60,7 +59,7 @@ class DeveloperServiceTest {
     void create_developer_bad_level_request() {
 
         // given
-        CreateMemberRequest errorRequest = new CreateMemberRequest(
+        CreateDeveloperRequest errorRequest = new CreateDeveloperRequest(
                 "name", 20, 10, SkillType.BACK_END, SkillLevel.NEW);
 
         // when & then

@@ -1,12 +1,11 @@
 package com.hunseong.dmaker.controller;
 
-import com.hunseong.dmaker.domain.dto.CreateMemberRequest;
-import com.hunseong.dmaker.domain.dto.CreateMemberResponse;
+import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
+import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
+import com.hunseong.dmaker.domain.dto.DeveloperDetailDto;
 import com.hunseong.dmaker.service.DeveloperService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -20,7 +19,12 @@ public class DeveloperController {
     private final DeveloperService developerService;
 
     @PostMapping("/create-developer")
-    public CreateMemberResponse createDeveloper(@Valid @RequestBody CreateMemberRequest request) {
+    public CreateDeveloperResponse createDeveloper(@Valid @RequestBody CreateDeveloperRequest request) {
         return developerService.createDeveloper(request);
+    }
+
+    @GetMapping("/developer/{id}")
+    public DeveloperDetailDto developerDetail(@PathVariable Long id) {
+        return developerService.findDeveloperDetail(id);
     }
 }
