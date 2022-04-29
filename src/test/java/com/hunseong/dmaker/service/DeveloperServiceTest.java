@@ -2,6 +2,7 @@ package com.hunseong.dmaker.service;
 
 import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
 import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
+import com.hunseong.dmaker.domain.dto.DeveloperDetailDto;
 import com.hunseong.dmaker.domain.type.SkillLevel;
 import com.hunseong.dmaker.domain.type.SkillType;
 import com.hunseong.dmaker.exception.DeveloperException;
@@ -65,5 +66,33 @@ class DeveloperServiceTest {
         // when & then
         assertThrows(DeveloperException.class,
                 () -> developerService.createDeveloper(errorRequest));
+    }
+
+    @Test
+    void developer_detail_success() {
+
+        // given
+        CreateDeveloperRequest request = new CreateDeveloperRequest(
+                "name", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
+
+        CreateDeveloperResponse response = developerService.createDeveloper(request);
+
+        // when
+        DeveloperDetailDto detailDto = developerService.findDeveloperDetail(response.getId());
+
+        // then
+        assertThat(detailDto.getName()).isEqualTo(request.getName());
+        assertThat(detailDto.getAge()).isEqualTo(request.getAge());
+        assertThat(detailDto.getSkillType()).isEqualTo(request.getSkillType());
+        assertThat(detailDto.getSkillLevel()).isEqualTo(request.getSkillLevel());
+    }
+
+    @Test
+    void developer_detail_no_developer() {
+
+        // given & when & then
+        assertThrows(DeveloperException.class,
+                () -> developerService.findDeveloperDetail(1L));
+
     }
 }
