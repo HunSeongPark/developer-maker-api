@@ -1,8 +1,11 @@
 package com.hunseong.dmaker.exception;
 
+import lombok.Getter;
+
 /**
  * Created by Hunseong on 2022/04/29
  */
+@Getter
 public class DeveloperException extends RuntimeException {
 
     private DeveloperErrorCode code;
