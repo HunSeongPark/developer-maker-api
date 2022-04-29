@@ -1,6 +1,6 @@
 # developer-maker-api
 기본적인 CRUD 기능 구현 API - 개발자 내맘대로 고용하고 퇴직시키기                       
-강의 : 
+참고 강의 : https://fastcampus.co.kr/dev_online_spring
 
 ## Project Goal
 Spring을 활용한 API 설계 및 구현 / 예외, 오류 처리 익혀보기
