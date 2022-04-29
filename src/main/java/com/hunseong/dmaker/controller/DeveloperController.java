@@ -34,4 +34,10 @@ public class DeveloperController {
                                               @Valid @RequestBody DeveloperUpdateRequestDto request) {
         return developerService.updateDeveloper(id, request);
     }
+
+    @DeleteMapping("/developer/{id}")
+    public String deleteDeveloper(@PathVariable Long id) {
+        developerService.deleteDeveloper(id);
+        return "SUCCESS";
+    }
 }

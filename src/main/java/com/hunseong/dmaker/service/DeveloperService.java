@@ -82,4 +82,12 @@ public class DeveloperService {
 
         return new DeveloperDetailDto(developer);
     }
+
+    @Transactional
+    public void deleteDeveloper(Long id) {
+        Developer developer = developerRepository.findById(id)
+                .orElseThrow(() -> new DeveloperException(NO_DEVELOPER));
+
+        developerRepository.delete(developer);
+    }
 }
