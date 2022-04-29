@@ -1,9 +1,7 @@
 package com.hunseong.dmaker.service;
 
-import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
-import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
-import com.hunseong.dmaker.domain.dto.DeveloperDetailDto;
-import com.hunseong.dmaker.domain.dto.DeveloperUpdateRequestDto;
+import com.hunseong.dmaker.domain.code.StatusCode;
+import com.hunseong.dmaker.domain.dto.*;
 import com.hunseong.dmaker.domain.type.SkillLevel;
 import com.hunseong.dmaker.domain.type.SkillType;
 import com.hunseong.dmaker.exception.DeveloperException;
@@ -12,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+import static com.hunseong.dmaker.domain.code.StatusCode.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -145,5 +146,52 @@ class DeveloperServiceTest {
         // given & when & then
         assertThrows(DeveloperException.class,
                 () -> developerService.findDeveloperDetail(1L));
+    }
+
+    @Test
+    void find_all_success() {
+
+        // given
+        CreateDeveloperRequest request1 = new CreateDeveloperRequest(
+                "name1", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
+        CreateDeveloperRequest request2 = new CreateDeveloperRequest(
+                "name2", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
+        CreateDeveloperRequest request3 = new CreateDeveloperRequest(
+                "name3", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
+        CreateDeveloperRequest request4 = new CreateDeveloperRequest(
+                "name4", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
+        CreateDeveloperRequest request5 = new CreateDeveloperRequest(
+                "name5", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
+
+        CreateDeveloperResponse response1 = developerService.createDeveloper(request1);
+        CreateDeveloperResponse response2 = developerService.createDeveloper(request2);
+        CreateDeveloperResponse response3 = developerService.createDeveloper(request3);
+        CreateDeveloperResponse response4 = developerService.createDeveloper(request4);
+        CreateDeveloperResponse response5 = developerService.createDeveloper(request5);
+
+        DeveloperUpdateRequestDto leaveUpdate = DeveloperUpdateRequestDto.builder()
+                .status(LEAVE)
+                .build();
+
+        DeveloperUpdateRequestDto retiredUpdate = DeveloperUpdateRequestDto.builder()
+                .status(RETIRED)
+                .build();
+
+        developerService.updateDeveloper(response2.getId(), leaveUpdate);
+        developerService.updateDeveloper(response3.getId(), leaveUpdate);
+        developerService.updateDeveloper(response4.getId(), retiredUpdate);
+        developerService.updateDeveloper(response5.getId(), retiredUpdate);
+
+        // when
+        List<CreateDeveloperResponse> all = developerService.getAllDevelopers(null).getDevelopers();
+        List<CreateDeveloperResponse> employed = developerService.getAllDevelopers(EMPLOYED).getDevelopers();
+        List<CreateDeveloperResponse> leave = developerService.getAllDevelopers(LEAVE).getDevelopers();
+        List<CreateDeveloperResponse> retired = developerService.getAllDevelopers(RETIRED).getDevelopers();
+
+        // then
+        assertThat(all.size()).isEqualTo(5);
+        assertThat(employed.size()).isEqualTo(1);
+        assertThat(leave.size()).isEqualTo(2);
+        assertThat(retired.size()).isEqualTo(2);
     }
 }
