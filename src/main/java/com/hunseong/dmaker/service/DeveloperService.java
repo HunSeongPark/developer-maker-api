@@ -1,8 +1,10 @@
 package com.hunseong.dmaker.service;
 
+import com.hunseong.dmaker.domain.code.StatusCode;
 import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
 import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
 import com.hunseong.dmaker.domain.dto.DeveloperDetailDto;
+import com.hunseong.dmaker.domain.dto.DeveloperUpdateRequestDto;
 import com.hunseong.dmaker.domain.entity.Developer;
 import com.hunseong.dmaker.domain.type.SkillLevel;
 import com.hunseong.dmaker.exception.DeveloperException;
@@ -33,6 +35,7 @@ public class DeveloperService {
                 .workYear(request.getWorkYear())
                 .skillLevel(request.getSkillLevel())
                 .skillType(request.getSkillType())
+                .status(StatusCode.EMPLOYED)
                 .build();
 
         Developer savedDeveloper = developerRepository.save(developer);
@@ -67,5 +70,16 @@ public class DeveloperService {
         return developerRepository.findById(id)
                 .map(DeveloperDetailDto::new)
                 .orElseThrow(() -> new DeveloperException(NO_DEVELOPER));
+    }
+
+    @Transactional
+    public DeveloperDetailDto updateDeveloper(Long id, DeveloperUpdateRequestDto request) {
+
+        Developer developer = developerRepository.findById(id)
+                .orElseThrow(() -> new DeveloperException(NO_DEVELOPER));
+
+        developer.update(request);
+
+        return new DeveloperDetailDto(developer);
     }
 }

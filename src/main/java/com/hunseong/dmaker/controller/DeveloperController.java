@@ -3,6 +3,7 @@ package com.hunseong.dmaker.controller;
 import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
 import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
 import com.hunseong.dmaker.domain.dto.DeveloperDetailDto;
+import com.hunseong.dmaker.domain.dto.DeveloperUpdateRequestDto;
 import com.hunseong.dmaker.service.DeveloperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,5 +27,11 @@ public class DeveloperController {
     @GetMapping("/developer/{id}")
     public DeveloperDetailDto developerDetail(@PathVariable Long id) {
         return developerService.findDeveloperDetail(id);
+    }
+
+    @PutMapping("/developer/{id}")
+    public DeveloperDetailDto updateDeveloper(@PathVariable Long id,
+                                              @Valid @RequestBody DeveloperUpdateRequestDto request) {
+        return developerService.updateDeveloper(id, request);
     }
 }

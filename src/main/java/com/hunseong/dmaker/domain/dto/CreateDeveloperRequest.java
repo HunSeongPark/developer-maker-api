@@ -23,11 +23,13 @@ public class CreateDeveloperRequest {
     @Size(min = 3, max = 50, message = "이름은 3 ~ 50자까지 가능합니다.")
     private String name;
 
+    @NotNull
     @Min(20)
-    private int age;
+    private Integer age;
 
+    @NotNull
     @Positive
-    private int workYear;
+    private Integer workYear;
 
     @NotNull
     private SkillType skillType;
