@@ -58,5 +58,8 @@ public class DeveloperService {
         if (skillLevel == SkillLevel.JUNIOR && workYear > 4) {
             throw new DeveloperException(LEVEL_EXPERIENCE_YEAR_NOT_MATCHED);
         }
+        if (skillLevel == SkillLevel.NEW && workYear > 0) {
+            throw new DeveloperException(LEVEL_EXPERIENCE_YEAR_NOT_MATCHED);
+        }
     }
 }
