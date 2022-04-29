@@ -5,6 +5,8 @@ import com.hunseong.dmaker.domain.entity.Developer;
 import com.hunseong.dmaker.domain.type.SkillType;
 import lombok.*;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;

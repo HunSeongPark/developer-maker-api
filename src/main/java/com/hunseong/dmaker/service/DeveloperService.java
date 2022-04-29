@@ -1,10 +1,7 @@
 package com.hunseong.dmaker.service;
 
 import com.hunseong.dmaker.domain.code.StatusCode;
-import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
-import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
-import com.hunseong.dmaker.domain.dto.DeveloperDetailDto;
-import com.hunseong.dmaker.domain.dto.DeveloperUpdateRequestDto;
+import com.hunseong.dmaker.domain.dto.*;
 import com.hunseong.dmaker.domain.entity.Developer;
 import com.hunseong.dmaker.domain.type.SkillLevel;
 import com.hunseong.dmaker.exception.DeveloperException;
@@ -12,6 +9,9 @@ import com.hunseong.dmaker.repository.DeveloperRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.hunseong.dmaker.exception.DeveloperErrorCode.*;
 
@@ -89,5 +89,24 @@ public class DeveloperService {
                 .orElseThrow(() -> new DeveloperException(NO_DEVELOPER));
 
         developerRepository.delete(developer);
+    }
+
+    public DeveloperListDto getAllDevelopers(StatusCode status) {
+        List<Developer> developers = developerRepository.findAll();
+
+        if (status != null) {
+            List<CreateDeveloperResponse> filterList =
+                    developers.stream()
+                            .filter(developer -> developer.getStatus() == status)
+                            .map(CreateDeveloperResponse::new)
+                            .collect(Collectors.toList());
+
+            return new DeveloperListDto(filterList);
+        } else {
+            List<CreateDeveloperResponse> list =
+                    developers.stream().map(CreateDeveloperResponse::new).collect(Collectors.toList());
+
+            return new DeveloperListDto(list);
+        }
     }
 }
