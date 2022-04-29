@@ -121,4 +121,29 @@ class DeveloperServiceTest {
         assertThat(updateDeveloper.getName()).isEqualTo(changeName);
         assertThat(updateDeveloper.getSkillLevel()).isEqualTo(SkillLevel.NEW);
     }
+
+    @Test
+    void developer_delete_success() {
+
+        // given
+        CreateDeveloperRequest request = new CreateDeveloperRequest(
+                "name", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
+
+        CreateDeveloperResponse response = developerService.createDeveloper(request);
+
+        // when
+        developerService.deleteDeveloper(response.getId());
+
+        // then
+        assertThrows(DeveloperException.class,
+                () -> developerService.findDeveloperDetail(response.getId()));
+    }
+
+    @Test
+    void developer_delete_no_developer() {
+
+        // given & when & then
+        assertThrows(DeveloperException.class,
+                () -> developerService.findDeveloperDetail(1L));
+    }
 }
