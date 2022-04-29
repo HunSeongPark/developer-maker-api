@@ -3,9 +3,7 @@ package com.hunseong.dmaker.domain.dto;
 import com.hunseong.dmaker.domain.code.StatusCode;
 import com.hunseong.dmaker.domain.entity.Developer;
 import com.hunseong.dmaker.domain.type.SkillType;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -16,6 +14,8 @@ import javax.validation.constraints.Size;
  * Created by Hunseong on 2022/04/29
  */
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DeveloperUpdateRequestDto {
 

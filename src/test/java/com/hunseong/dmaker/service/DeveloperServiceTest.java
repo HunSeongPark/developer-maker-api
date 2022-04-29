@@ -3,6 +3,7 @@ package com.hunseong.dmaker.service;
 import com.hunseong.dmaker.domain.dto.CreateDeveloperRequest;
 import com.hunseong.dmaker.domain.dto.CreateDeveloperResponse;
 import com.hunseong.dmaker.domain.dto.DeveloperDetailDto;
+import com.hunseong.dmaker.domain.dto.DeveloperUpdateRequestDto;
 import com.hunseong.dmaker.domain.type.SkillLevel;
 import com.hunseong.dmaker.domain.type.SkillType;
 import com.hunseong.dmaker.exception.DeveloperException;
@@ -94,5 +95,30 @@ class DeveloperServiceTest {
         assertThrows(DeveloperException.class,
                 () -> developerService.findDeveloperDetail(1L));
 
+    }
+
+    @Test
+    void developer_edit_success() {
+
+        // given
+        CreateDeveloperRequest request = new CreateDeveloperRequest(
+                "name", 20, 0, SkillType.BACK_END, SkillLevel.NEW);
+
+        CreateDeveloperResponse response = developerService.createDeveloper(request);
+
+        String changeName = "name2";
+        Integer changeWorkYear = 0;
+
+        DeveloperUpdateRequestDto updateDto = DeveloperUpdateRequestDto.builder()
+                .name(changeName)
+                .workYear(changeWorkYear)
+                .build();
+
+        // when
+        DeveloperDetailDto updateDeveloper = developerService.updateDeveloper(response.getId(), updateDto);
+
+        // then
+        assertThat(updateDeveloper.getName()).isEqualTo(changeName);
+        assertThat(updateDeveloper.getSkillLevel()).isEqualTo(SkillLevel.NEW);
     }
 }
